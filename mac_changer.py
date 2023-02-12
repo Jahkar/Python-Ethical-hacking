@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+
+import subprocess
+import optparse
+import re
+
+def get_arguments():
+    parser = optparse.OptionParser()
+    parser.add_option("-i", "--interface", dest="interface", help="Interface to change MAC address")
+    parser.add_option("-m", "--new_mac", dest="new_mac", help="New MAC address")
+    (options, arguments) = parser.parse_args()
+    if not options.interface:
+        parser.error("[-] Please enter and specify the interface, use --help for more info.")
+    elif not options.new_mac:
+        parser.error("[-] Please enter and specify new MAC, use --help for more info.")
+    return options
+
+def change_mac(interface, new_mac):
+    print("[+] Changing MAC address for " + interface + " to " + new_mac)
+    subprocess.call(["ifconfig", interface, "down"])
+    subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+    subprocess.call(["ifconfig", interface, "up"])
+
+def display_current_mac_address(interface):
+    ifconfig_result = subprocess.check_output(["ifconfig", interface])
+    mac_address_search_result = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", str(ifconfig_result))
+    if mac_address_search_result:
+        return mac_address_search_result.group(0)
+    else:
+        print("[-] Error could not read the MAC address.")
+
+options = get_arguments()
+
+current_mac = display_current_mac_address(options.interface)
+
+print("Current MAC: " + str(current_mac))
+
+change_mac(options.interface, options.new_mac)
+
+current_mac = display_current_mac_address(options.interface)
+if current_mac == options.new_mac:
+    print("[+] MAC address was changed to: " + str(current_mac))
+else:
+    print("[-] MAC address did not get changed.")
+
+
+
+
+
+
+# here we are utilizing our own defined function(s) in our mac address changer program.
+# The purpose of this program is to change the mac address
+# through the terminal, while taking user input and displaying options and
+# displaying the changed values. We achieved this through importing
+# 3 modules ( subprocess, optparse, and re ( regular expressions ) )
+# The first of the modules is subprocess which allows us to spawn new processes
+# And the 2nd being optparse which allows us to parse commandlines in the terminal.
+# And 3rd, re which is our regular expression.
+# Allows us to set rules to match a pattern in the text box of the ifconfig or any large texts.
+# And only displays the changed variable ( MAC address ).
+# We also are checking for user error(s) by implementing if else statements and then returning the value of user input
+# which is the varaible named options.
