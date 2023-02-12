@@ -60,3 +60,17 @@ else:
 # And only displays the changed variable ( MAC address ).
 # We also are checking for user error(s) by implementing if else statements and then returning the value of user input
 # which is the varaible named options.
+
+# 1. We import the subprocess module, which allows us to run commands on the command line.
+# 2. We import the optparse module, which allows us to create a command line interface.
+# 3. We import the re module, which allows us to use regular expressions.
+# 4. We create a function called get_arguments() that will parse the command line arguments.
+# 5. We create a function called change_mac() that will change the MAC address.
+# 6. We create a function called display_current_mac_address() that will display the current MAC address.
+# 7. We create a variable called options that will store the command line arguments.
+# 8. We create a variable called current_mac that will store the current MAC address.
+# 9. We print the current MAC address.
+# 10. We call the change_mac() function to change the MAC address.
+# 11. We create a variable called current_mac that will store the current MAC address.
+# 12. We check if the current MAC address is the same as the new MAC address.
+# 13. We print the current MAC address.
